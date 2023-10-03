@@ -1,0 +1,709 @@
+PROGRAM 1A:
+data abstraction/ encapsulation
+___________
+
+import java.util.Scanner;
+class complexv2{
+    double real,imaginary;
+    void complexset(double r,double i)
+    {
+        real = r;
+        imaginary= i;
+    }
+    complexv2()
+    {
+        real = imaginary =0;
+    }
+    complexv2 add(complexv2 c1,complexv2 c2)
+    {
+        complexv2 c3 = new complexv2();
+        c3.real = c1.real + c2.real;
+        c3.imaginary = c1.imaginary + c2.imaginary;
+        return c3;
+    }
+    complexv2 sub(complexv2 c1,complexv2 c2)
+    {
+        complexv2 c3 = new complexv2();
+        c3.real = c1.real - c2.real;
+        c3.imaginary = c1.imaginary - c2.imaginary;
+        return c3;
+    }
+
+    void complexget()
+    {
+        System.out.print(real);
+        if(imaginary >=0)
+            System.out.print("+");
+        System.out.println(imaginary+"i");
+    }
+}
+public class MAIN {
+
+    public static void main(String[] args)
+    {
+        Scanner s = new Scanner(System.in);
+        int choice;
+        complexv2 c1 = new complexv2();
+        complexv2 c2 = new complexv2();
+        complexv2 c3 = new complexv2();
+        complexv2 c4 = new complexv2();
+        while(true)
+        {
+
+            System.out.print("1.Enter the complex numbers\n2.Add\n2.Subtract\nAny other key to exit\n");
+            choice = s.nextInt();
+            switch(choice)
+            {
+                case 1: System.out.println("Enter the first complex number");
+                        c1.complexset(s.nextDouble(),s.nextDouble());
+                        System.out.println("Enter the second complex number");
+                        c2.complexset(s.nextDouble(),s.nextDouble());
+                        break;
+                case 2: c3 = c3.add(c1,c2);
+                    System.out.print("Addition result ");
+                    c3.complexget();
+                    break;
+                case 3: c4 = c4.sub(c1,c2);
+                    System.out.print("Subtraction result ");
+                    c4.complexget();
+                    break;
+                default: System.exit(0);
+            }
+        }
+    }
+}
+
+
+PROGRAM 1B
+__________
+import java.util.Scanner;
+class Address{
+    int street_num;
+    String city,state,country;
+
+    Address(int sn, String c,String s,String cy)
+    {
+        street_num = sn;
+        city = c;
+        state = s;
+        country = cy;
+    }
+}
+
+class Student{
+    String USN,Name;
+    Address address;
+
+    Student(String usn,String name,Address a)
+    {
+        USN = usn;
+        Name = name;
+        address = a;
+    }
+
+}
+class College{
+    String Name;
+    Address address;
+
+    College(String name,Address a)
+    {
+        Name = name;
+        address = a;
+    }
+}
+class Employee{
+    String name,empID;
+    Address address;
+
+    Employee(String EmpID,String Name,Address a)
+    {
+        empID = EmpID;
+        name = Name;
+        address = a;
+    }
+}
+public class Prog2 {
+    public static void main(String[] args)
+    {
+        int s=0,c=0,e=0,i,sn,choice;
+        Address ad;
+        String temp1,temp2,city,state,country;
+        Student[] students;
+        College[] colleges;
+        Employee[] employees;
+        students = new Student[20];
+        colleges = new College[20];
+        employees = new Employee[20];
+        Scanner in = new Scanner(System.in);
+        while(true) {
+            System.out.println("1.Enter the student details\n2.Enter the college details\n3.Enter the employee details\n4.Get the data\nAny other number to exit");
+            choice = in.nextInt();
+            switch (choice) {
+                case 1:
+                    System.out.println("Enter the number of students");
+                    s = in.nextInt();
+                    in.nextLine();
+                    System.out.print("Enter the student data (USN,Name,address(street num , city , state, country\n");
+                    for (i = 0; i < s; i++) {
+                        System.out.println("for student " + (i + 1));
+                        temp1 = in.nextLine();
+                        temp2 = in.nextLine();
+                        sn = in.nextInt();
+                        in.nextLine();
+                        city = in.nextLine();
+                        state = in.nextLine();
+                        country = in.nextLine();
+                        ad = new Address(sn, city, state, country);
+                        students[i] = new Student(temp1, temp2, ad);
+                    }
+                    break;
+                case 2:
+                    System.out.println("Enter the number of colleges");
+                    c = in.nextInt();
+                    in.nextLine();
+
+                    System.out.print("Enter the details for college\n");
+                    for (i = 0; i < c; i++) {
+                        System.out.print("for college " + (i + 1) + "(name , address)\n");
+                        temp1 = in.nextLine();
+                        sn = in.nextInt();
+                        in.nextLine();
+                        city = in.nextLine();
+                        state = in.nextLine();
+                        country = in.nextLine();
+                        ad = new Address(sn, city, state, country);
+                        colleges[i] = new College(temp1, ad);
+                    }
+                    break;
+                case 3:
+                    System.out.println("Enter the number of employees");
+                    e = in.nextInt();
+                    in.nextLine();
+                    System.out.print("Enter the details for employees(empid, name,address)\n");
+                    for (i = 0; i < e; i++) {
+                        System.out.print("for employee " + (i + 1) + " empid , name,address\n");
+                        temp1 = in.nextLine();
+                        temp2 = in.nextLine();
+                        sn = in.nextInt();
+                        in.nextLine();
+                        city = in.nextLine();
+                        state = in.nextLine();
+                        country = in.nextLine();
+                        ad = new Address(sn, city, state, country);
+                        employees[i] = new Employee(temp1, temp2, ad);
+                    }
+                    break;
+                case 4:
+                    System.out.println("Student number\tUSN\t Name\tAddress\n");
+                    for (i = 0; i < s; i++) {
+                        System.out.println((i + 1) +"\t" + students[i].USN + "\t" + students[i].Name + "\t" + students[i].address.street_num + " " + students[i].address.city + " " + students[i].address.state + " " + students[i].address.country);
+                    }
+                    System.out.println("College number\tName\tAddress\n");
+                    for (i = 0; i < c; i++) {
+
+                        System.out.println((i + 1) +"\t" + colleges[i].Name + "\t"+ colleges[i].address.street_num + " " + colleges[i].address.city + " " + colleges[i].address.state + " " + colleges[i].address.country);
+                    }
+                    System.out.println("employee number\tEmpid\tName\tAddress\n");
+                    for (i = 0; i < e; i++) {
+
+                        System.out.println((i + 1) + "\t" + employees[i].empID + "\t " + employees[i].name + "\t" + employees[i].address.street_num + " " + employees[i].address.city + " " + employees[i].address.state + " " + employees[i].address.country);
+                    }
+                    break;
+
+
+
+
+                default:
+                    System.exit(0);
+            }
+        }
+
+
+    }
+}
+
+_______________________________________________________________________________________________________________________________
+_______________________________________________________________________________________________________________________________
+PROGRAM 2:
+inheritance and polymorphism
+----------------------------
+import java.util.Scanner;
+class Circle{
+    private double radius;
+    private String color;
+    public Circle(double radius)
+    {
+        this.radius = radius;
+        this.color = "";
+    }
+    public Circle(double radius, String color)
+    {
+        this.radius = radius;
+        this.color = color;
+    }
+    public double getRadius()
+    {
+        return this.radius;
+    }
+    public double getArea()
+    {
+        return Math.PI*Math.pow(getRadius(), 2);
+    }
+    public String getColor()
+    {
+        return this.color;
+    }
+}
+class Cylinder extends Circle
+{
+    private double height;
+    public Cylinder(double height, double radius)
+    {
+        super(radius);
+        this.height = height;
+    }
+    public Cylinder(double height, double radius, String color)
+    {
+        super(radius,color);
+        this.height = height;
+    }
+    public double getHeight()
+    {
+        return this.height;
+    }
+    public double getVolume()
+    {
+        return Math.PI*Math.pow(getRadius(),2)*getHeight();
+    }
+    public double getArea()
+    {
+        return 2*(super.getArea()+ Math.PI*getRadius()*getHeight());
+    }
+}
+public class Main {
+
+    public static void main(String[] args)
+    {
+        Scanner scan = new Scanner(System.in);
+        Cylinder cylin[] = new Cylinder[2];
+        System.out.println("Enter the details for Cylinder 1:");
+        System.out.println("1)Height\t2)Radius\t3)Color\n");
+        cylin[0] = new Cylinder(Double.parseDouble(scan.next()),Double.parseDouble(scan.next()),scan.next());
+        System.out.println("\nEnter the details for Cylinder 2:");
+        System.out.println("1)Height\t2)Radius\t3)Color\n");
+        cylin[1] = new Cylinder(Double.parseDouble(scan.next()),Double.parseDouble(scan.next()),scan.next());
+        scan.close();
+        if((cylin[0].getArea() == cylin[1].getArea()) && (cylin[0].getVolume() == cylin[1].getVolume()) && cylin[0].getColor().equalsIgnoreCase(cylin[1].getColor()))
+            System.out.println("\nCylinders are same\n");
+        else
+            System.out.println("Cylinders are not same\n");
+    }
+
+
+}
+
+____________________________________________________________________________________________________________________________________
+____________________________________________________________________________________________________________________________________
+
+PROGRAM 3A:
+Package and interface
+---------------------
+
+thirdsem:
+___________
+package CSE;
+
+public class Thirdsem {
+    void methodDefault(){
+        System.out.println("Default Method is Accessible");
+    }
+    private void methodPrivate(){
+        System.out.println("Private Method is Accessible");
+    }
+    protected void methodProtected(){
+        System.out.println("Protected Method is Accessible");
+    }
+    public void welcomeMessage(){
+        System.out.println("Welcome to 3rd Sem :)");
+    }
+}
+
+csedept:
+_______
+package RVCE;
+
+import CSE.Thirdsem;
+
+class cse_department extends Thirdsem{
+    public void welcomeMessage(){
+        System.out.println("Public Method is overriding\n Welcome to CSE Department");
+    }
+    protected void methodProtected(){
+        System.out.println("Protected Method is overriding");
+    }
+    void methodDefault(){
+        System.out.println("Default Method overriding");
+    }
+    private void methodPrivate(){
+        System.out.println("Private Method");
+    }
+    public void display(){
+        System.out.println("Inside the Display");
+        System.out.println("Calling private method: ");
+        methodPrivate();
+    }
+}
+
+public class Csedept {
+    public static void main(String[] args) {
+        cse_department csedepartment = new cse_department();
+        Thirdsem thirdSem = new Thirdsem();
+        //Using Private method
+        csedepartment.display();
+        //Public overriding
+        csedepartment.welcomeMessage();
+        //Protected
+        csedepartment.methodProtected();
+        //Default
+        csedepartment.methodDefault();
+
+        thirdSem.welcomeMessage();
+    }
+}
+
+________________________________
+PROGRAM 3B:
+
+interface Animal{
+
+    public void eat();
+    public void sound();
+    public void nooflegs();
+}
+interface TiredAnimal extends Animal{
+    public void sleep();
+}
+
+class Lion implements TiredAnimal{
+
+    public void eat()
+    {
+        System.out.println("CHOMP CHOMP");
+    }
+    public void sound()
+    {
+        System.out.println("ROAAAR");
+    }
+
+    public void sleep()
+    {
+        System.out.println("Lion is sleeping");
+    }
+    public void nooflegs()
+    {
+        System.out.println("Lion is walking using its 4 legs\n");
+    }
+
+}
+
+class Snake implements TiredAnimal{
+
+    public void eat()
+    {
+        System.out.println("SWALLOW");
+    }
+
+    public void sound()
+    {
+        System.out.println("HISSSSS");
+    }
+    public void sleep()
+    {
+        System.out.println("Snake is sleeping");
+    }
+    public void nooflegs()
+    {
+        System.out.println("Snake crawls, has no legs");
+    }
+
+}
+
+
+public class Main {
+    public static void main(String[] args)
+    {
+        Lion l1 = new Lion();
+        Snake s1 = new Snake();
+        System.out.println("LION");
+        l1.eat();
+        l1.sound();
+        l1.sleep();
+        l1.nooflegs();
+        System.out.println("SNAKE");
+        s1.eat();
+        s1.sound();
+        s1.sleep();
+        s1.nooflegs();
+    }
+}
+
+____________________________________________________________________________________________________________
+_____________________________________________________________________________________________________________
+
+PROGRAM 4:
+ EXCEPTION HANDLING:
+--------------------
+
+
+import java.util.Scanner;
+class DemonetisationException extends Exception{
+    float amount;
+    DemonetisationException(float amount){
+        this.amount = amount;
+    }
+    public String toString(){
+        return "Deposit of old currency of (Rs" + amount + ") amount crosses 5,000 and cannot be deposited";
+    }
+}
+
+class Account{
+    float balance;
+    Account(){
+        balance = 500;
+    }
+    void deposit(float amount, String currencyType){
+        String currency = currencyType.toUpperCase();
+        try{
+            if(currency.equals("OLD") && amount > 5000){
+                throw new DemonetisationException(amount);
+            }
+            balance += amount;
+        }
+        catch (DemonetisationException e){
+            System.out.println(e);
+        }
+    }
+    void withdraw(float amount){
+        if(amount > balance || (balance - amount < 500)){
+            System.out.println("Cannot withdraw");
+        }
+        else{
+            balance = balance - amount;
+        }
+    }
+    void getBalance(){
+        System.out.println("The current balance is " + balance);
+    }
+}
+
+public class Main {
+    public static void main(String[] args){
+        int choice;
+        float amount;
+        String currencyType;
+        Scanner input = new Scanner(System.in);
+        Account customer = new Account();
+        while(true){
+            System.out.println("1 . deposit");
+            System.out.println("2 . withdraw");
+            System.out.println("3 . get balance");
+            System.out.println("Enter the choice");
+            choice = input.nextInt();
+            switch(choice){
+                case 1 : {
+                    System.out.println("enter the amount to deposit");
+                    amount = input.nextFloat();
+                    System.out.println("enter OLD or NEW (currencyType)");
+                    currencyType = input.next();
+                    customer.deposit(amount, currencyType);
+                    break;
+                }
+                case 2 : {
+                    System.out.println("Enter amount to be withdrawn");
+                    amount = input.nextFloat();
+                    customer.withdraw(amount);
+                    break;
+                }
+                case 3 :{
+                    customer.getBalance();
+                }
+                default: System.exit(0);
+            }
+        }
+    }
+}
+
+__________________________________________________________________________________________________
+_____________________________________________________________________________________________________
+PROGRAM 5:
+Multithreading
+---------------
+import java.util.LinkedList;
+import java.util.Random;
+
+class Market1 {
+    LinkedList<String> list = new LinkedList<>();
+    final int capacity = 5;
+    String[] fruits ={"Apple","Orange","Grape","Watermelon"};
+    Random random = new Random();
+    public void produce() throws InterruptedException
+    {
+        while (true)
+        {
+            synchronized (this)
+            {
+                while (list.size() == capacity)
+                    wait();
+                String fruit = fruits[random.nextInt(4)];
+                System.out.println("Farmer produced "+ fruit);
+                list.add(fruit);
+                notifyAll();
+                Thread.sleep(500);
+            }
+        }
+    }
+
+    public void consume() throws InterruptedException
+    {
+        while (true) {
+            synchronized (this)
+            {
+                while (list.size() == 0)
+                    wait();
+                String val = list.removeFirst();
+                System.out.println("Customer Bought "+ val);
+                notifyAll();
+                Thread.sleep(500);
+            }
+        }
+    }
+}
+
+public class Main{
+    public static void main(String[] args) throws InterruptedException
+    {
+        final Market1 market = new Market1();
+        Thread t1 = new Thread(new Runnable() {
+            @Override
+            public void run()
+            {
+                try {
+                    market.produce();
+                }
+                catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+
+        Thread t2 = new Thread(new Runnable() {
+            @Override
+            public void run()
+            {
+                try {
+                    market.consume();
+                }
+                catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+        t1.start();
+        t2.start();
+        t1.join();
+        t2.join();
+    }
+}
+
+_______________________________________________________________________________________________________________
+__________________________________________________________________________________________________________________________
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Scanner;
+
+public class Main {
+    public static void main(String[] args){
+        Scanner input=new Scanner(System.in);
+        ArrayList<String> lis, arrayList, clonelist;
+
+        System.out.print("Enter the size of list: ");
+        int n=input.nextInt();
+        lis=new ArrayList<>(n);
+        input.nextLine();
+        System.out.println("Enter "+n+" colours:");
+
+        for(int i=0;i<n;i++)
+            lis.add(input.nextLine());
+        System.out.println(lis);
+
+        int ch; String str;
+        while(true) {
+            System.out.println("Enter your choice:\n" +
+                    "1. Add elements to List\n" +
+                    "2. Copy ArrayList to Array\n" +
+                    "3. Reverse ArrayList content\n" +
+                    "4. Get Sub list from an ArrayList.\n" +
+                    "5. To sort the ArrayList\n" +
+                    "6. To clone the ArrayList\n" +
+                    "7. Exit");
+            ch = input.nextInt();
+            switch (ch) {
+                case 1:
+                    System.out.println("Enter the number of new elements:");
+                    int x= input.nextInt();
+                    System.out.println("Enter the elements:");
+                    for(int i=0;i<x;i++){
+                        str=input.next();
+                        lis.add(str);
+                    }
+                    System.out.println(lis);
+                    break;
+                case 2:
+                    String[] arr= lis.toArray(new String[0]);
+                    System.out.println("Array: ");
+                    for(String s:arr){
+                        System.out.print(s);
+                    }
+                    break;
+                case 3:
+                    System.out.println("Before reversing:");
+                    System.out.println(lis);
+                    System.out.println("After reversing:");
+                    Collections.reverse(lis);
+                    System.out.println(lis);
+                    break;
+                case 4:
+                    System.out.println("Enter the start index:");
+                    int start=input.nextInt();
+                    if(start>=0){
+                        System.out.println("Enter the end index:");
+                        int end=input.nextInt();
+                        if(end<lis.size()){
+                            arrayList=new ArrayList<String>(lis.subList(start,end));
+                            System.out.println("Sublist:");
+                            System.out.println(arrayList);
+                            break;
+                        }
+                    }
+                    System.out.println("Invalid");
+                    break;
+                case 5:
+                    System.out.println("Before sorting:");
+                    System.out.println(lis);
+                    System.out.println("After sorting:");
+                    Collections.sort(lis);
+                    System.out.println(lis);
+                    break;
+                case 6:
+                    clonelist=(ArrayList<String>)lis.clone();
+                    System.out.println("The clone is:");
+                    System.out.println(clonelist);
+                    break;
+                default:
+                    return;
+            }
+        }
+
+    }
+}
