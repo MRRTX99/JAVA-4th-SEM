@@ -1,0 +1,252 @@
+import tkinter as tk
+from tkinter import Menu, Toplevel, Label, Entry, Button, messagebox
+from tkcalendar import Calendar
+import openai
+import time
+import random
+
+# Replace 'YOUR_API_KEY' with your actual OpenAI API key
+api_key = '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'
+openai.api_key = api_key
+
+# Initialize student_name as an empty string
+student_name = ""
+
+# List of random fun facts
+fun_facts = [
+    "Fun Fact 1: Octopuses have three hearts.",
+    "Fun Fact 2: The Eiffel Tower can be 15 cm taller during the summer.",
+    "Fun Fact 3: Bananas are berries, but strawberries aren't.",
+    "Fun Fact 4: Honey never spoils. Archaeologists have found pots of honey in ancient Egyptian tombs that are over "
+    "3,000 years old and still perfectly edible.",
+    "Fun Fact 5: A day on Venus is longer than a year on Venus.",
+]
+
+# Function to display a random fun fact
+def display_fun_fact():
+    random_fact = random.choice(fun_facts)
+    chat_history.config(state=tk.NORMAL)
+    timestamp = time.strftime("%Y-%m-%d %H:%M:%S")
+    chat_history.insert(tk.END, f"{timestamp}\n")
+    chat_history.insert(tk.END, f"Fun Fact: {random_fact}\n\n")
+    chat_history.config(state=tk.DISABLED)
+
+# Function to ask a question and display the answer
+def ask_question():
+    user_input = entry.get()
+
+    response = openai.Completion.create(
+        engine="text-davinci-002",
+        prompt=user_input,
+        max_tokens=50
+    )
+
+    bot_response = response.choices[0].text.strip()
+    chat_history.config(state=tk.NORMAL)
+    timestamp = time.strftime("%Y-%m-%d %H:%M:%S")
+
+    # Display student's name instead of "User" if available
+    global student_name  # Use the global keyword to modify the global variable
+    if student_name:
+        chat_history.insert(tk.END, f"{timestamp}\n")
+        chat_history.insert(tk.END, f"{student_name}: {user_input}\n")
+        chat_history.insert(tk.END, f"Chatbot: {bot_response}\n\n")
+    else:
+        chat_history.insert(tk.END, f"{timestamp}\n")
+        chat_history.insert(tk.END, f"User: {user_input}\n")
+        chat_history.insert(tk.END, f"Chatbot: {bot_response}\n\n")
+
+    chat_history.config(state=tk.DISABLED)
+
+    entry.delete(0, tk.END)
+
+# Function to clear the chat history
+def clear_chat():
+    chat_history.config(state=tk.NORMAL)
+    chat_history.delete(1.0, tk.END)
+    chat_history.config(state=tk.DISABLED)
+
+# Function to open a dialog for entering student details
+def student_details():
+    global student_name  # Use the global keyword to modify the global variable
+
+    details_window = tk.Toplevel(window)
+    details_window.title("Student Details")
+
+    # Create labels and entry widgets for student details
+    tk.Label(details_window, text="Name:").pack()
+    name_entry = tk.Entry(details_window)
+    name_entry.pack()
+
+    tk.Label(details_window, text="Roll Number:").pack()
+    roll_number_entry = tk.Entry(details_window)
+    roll_number_entry.pack()
+
+    tk.Label(details_window, text="Batch:").pack()
+    batch_entry = tk.Entry(details_window)
+    batch_entry.pack()
+
+    # Function to save student details
+    def save_details():
+        global student_name  # Use the global keyword to modify the global variable
+        student_name = name_entry.get()
+        roll_number = roll_number_entry.get()
+        batch = batch_entry.get()
+
+        # You can save the details to a file or process them as needed
+        # For example, you can print them to the chat history
+        chat_history.config(state=tk.NORMAL)
+        chat_history.insert(tk.END, f"Student Details:\n")
+        chat_history.insert(tk.END, f"Name: {student_name}\n")
+        chat_history.insert(tk.END, f"Roll Number: {roll_number}\n")
+        chat_history.insert(tk.END, f"Batch: {batch}\n\n")
+        chat_history.config(state=tk.DISABLED)
+
+        details_window.destroy()
+
+    # Create a button to save details
+    save_button = tk.Button(details_window, text="Save", command=save_details)
+    save_button.pack()
+
+# Function to display the timetable for a specific class
+def display_timetable(selected_class):
+    timetable_window = Toplevel(window)
+    timetable_window.title(f"Time Table - Class {selected_class}")
+
+    # Define the timetable for each class (you can customize this)
+    class_timetables = {
+        "Class 1": "Monday: Math\nTuesday: Science\nWednesday: History\nThursday: English\nFriday: Art",
+        "Class 2": "Monday: English\nTuesday: Math\nWednesday: Science\nThursday: Art\nFriday: History",
+        "Class 3": "Monday: History\nTuesday: English\nWednesday: Math\nThursday: Science\nFriday: Art",
+    }
+
+    # Create a label to display the timetable
+    timetable_label = Label(timetable_window, text=class_timetables.get(selected_class, "No timetable available"),
+                            font=custom_font, bg=background_color)
+    timetable_label.pack(padx=20, pady=10)
+
+# Function to open the timetable selection window
+def open_timetable_window():
+    timetable_selection_window = Toplevel(window)
+    timetable_selection_window.title("Select Class")
+
+    # Create buttons for each class to display the timetable
+    class_buttons = ["Class 1", "Class 2", "Class 3"]
+    for class_name in class_buttons:
+        class_button = Button(timetable_selection_window, text=class_name,
+                              command=lambda class_name=class_name: display_timetable(class_name),
+                              font=custom_font, bg="#3498db", fg="white")
+        class_button.pack(padx=20, pady=10)
+
+# Function to take the aptitude test
+def take_test():
+    test_window = Toplevel(window)
+    test_window.title("Aptitude Test")
+
+    # Create questions and answers for the aptitude test
+    aptitude_questions = [
+        "1. What is 2 + 2?",
+        "2. Which planet is known as the Red Planet?",
+        "3. How many sides does a triangle have?",
+        "4. What is the capital of France?",
+        "5. What is the square root of 16?",
+    ]
+    aptitude_answers = ["4", "Mars", "3", "Paris", "4"]
+
+    # Initialize variables to keep track of the user's score
+    score = 0
+    total_questions = len(aptitude_questions)
+
+    # Function to check the answers and calculate the score
+    def check_answers():
+        nonlocal score
+        for i in range(total_questions):
+            user_answer = user_answers[i].get()
+            if user_answer.lower() == aptitude_answers[i].lower():
+                score += 1
+        messagebox.showinfo("Test Result", f"Your score: {score}/{total_questions}")
+
+    # Create labels and entry widgets for questions and user answers
+    user_answers = []
+    for question in aptitude_questions:
+        tk.Label(test_window, text=question, font=custom_font).pack()
+        user_answer = tk.Entry(test_window, width=20, font=custom_font)
+        user_answer.pack()
+        user_answers.append(user_answer)
+
+    # Create a button to submit the test and check the answers
+    submit_button = tk.Button(test_window, text="Submit Test", command=check_answers, font=custom_font,
+                              bg="#3498db", fg="white")
+    submit_button.pack(pady=10)
+
+# Create the main window
+window = tk.Tk()
+window.title("Chatbot")
+
+# Add a custom chatbot icon (replace 'icon.png' with your own icon)
+icon = tk.PhotoImage(file=r"C:\Users\Sadiq\Desktop\Screenshot 2023-09-10 222554.png")
+window.iconphoto(True, icon)
+
+# Create a colorful background
+background_color = "#FFD700"  # Gold color
+window.configure(bg=background_color)
+
+# Create a custom font
+custom_font = ('Helvetica', 12)
+
+# Create a menu bar
+menu_bar = Menu(window)
+window.config(menu=menu_bar)
+
+# Create a "File" menu
+file_menu = Menu(menu_bar, tearoff=0)
+menu_bar.add_cascade(label="File", menu=file_menu)
+file_menu.add_command(label="Student Details", command=student_details)
+file_menu.add_separator()
+file_menu.add_command(label="Exit", command=window.quit)
+
+# Create a frame to contain buttons in one row with spacing
+button_frame = tk.Frame(window, bg=background_color)
+button_frame.pack(padx=20, pady=10)
+
+# Create an entry widget for user input
+entry = tk.Entry(window, width=50, font=custom_font)
+entry.pack(padx=20, pady=10)
+
+# Create a button with a colorful style to display fun facts
+fun_fact_button = tk.Button(button_frame, text="Display Fun Fact", command=display_fun_fact, font=custom_font,
+                            bg="#FF5733", fg="white")
+fun_fact_button.pack(side=tk.LEFT, padx=10)
+
+# Create a button with a colorful style to ask questions
+send_button = tk.Button(button_frame, text="Ask", command=ask_question, font=custom_font, bg="#4CAF50", fg="white")
+send_button.pack(side=tk.LEFT, padx=10)
+
+# Create a button with a colorful style to clear chat history
+clear_button = tk.Button(button_frame, text="Clear Chat", command=clear_chat, font=custom_font, bg="#E74C3C",
+                         fg="white")
+clear_button.pack(side=tk.LEFT, padx=10)
+
+# Create a button with a colorful style to view the time table
+timetable_button = tk.Button(button_frame, text="Time Table", command=open_timetable_window, font=custom_font, bg="#3498db", fg="white")
+timetable_button.pack(side=tk.LEFT, padx=10)
+
+# Create a button with a colorful style to take the aptitude test
+test_button = tk.Button(button_frame, text="Aptitude Test", command=take_test, font=custom_font, bg="#9b59b6", fg="white")
+test_button.pack(side=tk.LEFT, padx=10)
+
+# Create a text widget with a colorful style for chat history
+chat_history = tk.Text(window, width=60, height=20, font=custom_font, bg="white", wrap=tk.WORD)
+chat_history.pack(side=tk.LEFT, padx=20, pady=10)
+chat_history.config(state=tk.DISABLED)
+
+# Create a side column for the calendar
+calendar_frame = tk.Frame(window, bg=background_color)
+calendar_frame.pack(side=tk.RIGHT, padx=20, pady=10, fill=tk.Y)
+
+# Create a calendar widget
+cal = Calendar(calendar_frame, selectmode="day")
+cal.pack(fill=tk.BOTH, expand=True)
+
+# Start the GUI main loop
+window.mainloop()
